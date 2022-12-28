@@ -1650,7 +1650,11 @@ namespace LCD1IN8 {
         //Turn on the LCD display
         //LCD_WriteReg(0x29);
     }
-     
+    
+    //% blockId=LCD_DisplayWindows
+    //% blockGap=8
+    //% block="Show Partial Screen"
+    //% weight=190
     export function LCD_DisplayWindows(Xstart: number, Ystart: number, Xend: number, Yend: number): void {
         SPIRAM_Set_Mode(SRAM_STREAM_MODE);
         LCD_SetWindows(Xstart, Ystart, Xend, Yend);
