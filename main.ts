@@ -1521,7 +1521,7 @@ namespace LCD1IN8 {
     //% block="LCD Clear"
     //% weight=195
     export function LCD_Clear(): void{
-        LCD_SetWindows(0, 0, LCD_WIDTH, LCD_HEIGHT);
+        LCD_SetWindows(1, 1, LCD_WIDTH, LCD_HEIGHT);
         LCD_SetColor(0xFFFF, LCD_WIDTH + 2, LCD_HEIGHT + 2);
     }
 
@@ -1530,7 +1530,7 @@ namespace LCD1IN8 {
     //% block="Filling Color %Color"
     //% weight=195
     export function LCD_Filling(Color: COLOR): void{
-        LCD_SetWindows(0, 0, LCD_WIDTH, LCD_HEIGHT);
+        LCD_SetWindows(1, 1, LCD_WIDTH, LCD_HEIGHT);
         LCD_SetColor(Color, LCD_WIDTH + 2, LCD_HEIGHT + 2);
     }
 	
@@ -1572,16 +1572,16 @@ namespace LCD1IN8 {
         //set the X coordinates
         LCD_WriteReg(0x2A);
         LCD_WriteData_8Bit(0x00);
-        LCD_WriteData_8Bit((Xstart & 0xff) + 1);
+        LCD_WriteData_8Bit((Xstart & 0xff));
         LCD_WriteData_8Bit(0x00 );
-        LCD_WriteData_8Bit(((Xend - 1) & 0xff) + 1);
+        LCD_WriteData_8Bit((Xend & 0xff));
 
         //set the Y coordinates
         LCD_WriteReg(0x2B);
         LCD_WriteData_8Bit(0x00);
-        LCD_WriteData_8Bit((Ystart & 0xff) + 2);
+        LCD_WriteData_8Bit((Ystart & 0xff) + 1);
         LCD_WriteData_8Bit(0x00 );
-        LCD_WriteData_8Bit(((Yend - 1) & 0xff)+ 2);
+        LCD_WriteData_8Bit((Yend & 0xff) + 1);
 
         LCD_WriteReg(0x2C);
     }
@@ -1621,7 +1621,7 @@ namespace LCD1IN8 {
     //% weight=190
     export function LCD_Display(): void {
         SPIRAM_Set_Mode(SRAM_STREAM_MODE);
-        LCD_SetWindows(0, 0, 160, 128);
+        LCD_SetWindows(1, 1, 160, 128);
         let rbuf = [];
         for (let i=0; i<640; i++) {
             rbuf[i] = 0;
