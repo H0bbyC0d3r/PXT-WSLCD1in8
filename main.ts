@@ -1876,6 +1876,30 @@ namespace LCD1IN8 {
         DisString(Xnum, Ynum, num + "", Color);
     }
 
+    //% blockId=LCD_DisplayPixels
+    //% blockGap=8
+    //% block="Display pixels|x1 %Xstart|y1 %Ystart|x2 %Xend|y2 %Yend"
+    //% Xstart.min=1 Xstart.max=160 Ystart.min=1 Ystart.max=128 Xend.min=1 Xend.max=160 Yend.min=1 Yend.max=128
+    //% weight=190
+    export function LCD_DisplayPixels(Xstart: number, Ystart: number, Xend: number, Yend: number): void {
+        SPIRAM_Set_Mode(SRAM_STREAM_MODE);
+        LCD_SetWindows(Xstart, Ystart, Xend, Yend);
+        let rbuf = [];
+        let Xwidth = (Xend - Xstart + 1) * 2;
+        for (let i=0; i<Xwidth; i++) {
+            rbuf[i] = 0;
+        }
+
+        for (let y = Ystart; y < Yend; y++) { // read line
+            pins.digitalWritePin(DigitalPin.P12, 1);
+            pins.digitalWritePin(DigitalPin.P16, 0);
+            for (let x = 0; x < Xwidth; x++) {
+                pins.spiWrite(rbuf[x]);
+            }
+            pins.digitalWritePin(DigitalPin.P16, 1);
+        }
+    }
+
     function DisChar_1207(Xchar:number, Ychar:number, Char_Offset:number, Color:number): void {
         let Page = 0, Column = 0;
         let off = Char_Offset
