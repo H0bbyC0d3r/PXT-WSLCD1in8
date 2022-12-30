@@ -1646,9 +1646,6 @@ namespace LCD1IN8 {
             }
             pins.digitalWritePin(DigitalPin.P16, 1);   
         }
-       
-        //Turn on the LCD display
-        //LCD_WriteReg(0x29);
     }
     
     //% blockId=LCD_DisplayWindows
@@ -1656,7 +1653,6 @@ namespace LCD1IN8 {
     //% block="Show Partial Screen|x1 %Xstart|y1 %Ystart|x2 %Xend|y2 %Yend"
     //% Xstart.min=1 Xstart.max=160 Ystart.min=1 Ystart.max=128 Xend.min=1 Xend.max=160 Yend.min=1 Yend.max=128
     //% weight=190
-
     export function LCD_DisplayWindows(Xstart: number, Ystart: number, Xend: number, Yend: number): void {
         SPIRAM_Set_Mode(SRAM_STREAM_MODE);
         LCD_SetWindows(Xstart, Ystart, Xend, Yend);
@@ -1685,39 +1681,7 @@ namespace LCD1IN8 {
             }
             pins.digitalWritePin(DigitalPin.P16, 1);   
         }
-       
-        //Turn on the LCD display
-        //LCD_WriteReg(0x29);
     }
-
-    //% blockId=LCD_DisplayPixels
-    //% blockGap=8
-    //% block="Write Block|x1 %Xstart|y1 %Ystart|x2 %Xend|y2 %Yend"
-    //% Xstart.min=1 Xstart.max=160 Ystart.min=1 Ystart.max=128 Xend.min=1 Xend.max=160 Yend.min=1 Yend.max=128
-    //% weight=190
-
-    export function LCD_DisplayPixels(Xstart: number, Ystart: number, Xend: number, Yend: number): void {
-        SPIRAM_Set_Mode(SRAM_STREAM_MODE);
-        LCD_SetWindows(Xstart, Ystart, Xend, Yend);
-        let rbuf = [];
-        let Xwidth = (Xend - Xstart + 1) * 2;
-        for (let i=0; i<Xwidth; i++) {
-            rbuf[i] = 0;
-        }
-
-        for (let y = Ystart; y < Yend; y++) { // read line
-            pins.digitalWritePin(DigitalPin.P12, 1);
-            pins.digitalWritePin(DigitalPin.P16, 0);
-            for (let x = 0; x < Xwidth; x++) {
-                pins.spiWrite(rbuf[x]);
-            }
-            pins.digitalWritePin(DigitalPin.P16, 1);
-        }
-       
-        //Turn on the LCD display
-        //LCD_WriteReg(0x29);
-    }
-
 
     //% blockId=DrawPoint
     //% blockGap=8
@@ -1729,7 +1693,6 @@ namespace LCD1IN8 {
         let XDir_Num ,YDir_Num;
         for(XDir_Num = 0; XDir_Num < Dot_Pixel; XDir_Num++) {
             for(YDir_Num = 0; YDir_Num < Dot_Pixel; YDir_Num++) {
-                //LCD_SetPoint(Xpoint + XDir_Num - Dot_Pixel, Ypoint + YDir_Num - Dot_Pixel, Color);
                 LCD_SetPoint(Xpoint + XDir_Num, Ypoint + YDir_Num, Color);
             }
         }
@@ -1911,6 +1874,30 @@ namespace LCD1IN8 {
 		let Xpoint = Xnum;
 		let Ypoint = Ynum;
         DisString(Xnum, Ynum, num + "", Color);
+    }
+
+    //% blockId=LCD_DisplayPixels
+    //% blockGap=8
+    //% block="Write Block|x1 %Xstart|y1 %Ystart|x2 %Xend|y2 %Yend"
+    //% Xstart.min=1 Xstart.max=160 Ystart.min=1 Ystart.max=128 Xend.min=1 Xend.max=160 Yend.min=1 Yend.max=128
+    //% weight=190
+    export function LCD_DisplayPixels(Xstart: number, Ystart: number, Xend: number, Yend: number): void {
+        SPIRAM_Set_Mode(SRAM_STREAM_MODE);
+        LCD_SetWindows(Xstart, Ystart, Xend, Yend);
+        let rbuf = [];
+        let Xwidth = (Xend - Xstart + 1) * 2;
+        for (let i=0; i<Xwidth; i++) {
+            rbuf[i] = 0;
+        }
+
+        for (let y = Ystart; y < Yend; y++) { // read line
+            pins.digitalWritePin(DigitalPin.P12, 1);
+            pins.digitalWritePin(DigitalPin.P16, 0);
+            for (let x = 0; x < Xwidth; x++) {
+                pins.spiWrite(rbuf[x]);
+            }
+            pins.digitalWritePin(DigitalPin.P16, 1);
+        }
     }
 
     function DisChar_1207(Xchar:number, Ychar:number, Char_Offset:number, Color:number): void {
