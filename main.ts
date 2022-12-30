@@ -1878,7 +1878,7 @@ namespace LCD1IN8 {
 
     //% blockId=LCD_DisplayPixels
     //% blockGap=8
-    //% block="Display pixels|x1 %Xstart|y1 %Ystart|x2 %Xend|y2 %Yend"
+    //% block="Show pixels|x1 %Xstart|y1 %Ystart|x2 %Xend|y2 %Yend"
     //% Xstart.min=1 Xstart.max=160 Ystart.min=1 Ystart.max=128 Xend.min=1 Xend.max=160 Yend.min=1 Yend.max=128
     //% weight=190
     export function LCD_DisplayPixels(Xstart: number, Ystart: number, Xend: number, Yend: number): void {
